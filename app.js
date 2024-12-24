@@ -43,6 +43,12 @@ const Application = mongoose.model('Application', applicationSchema);
 app.post('/apply', async (req, res) => {
   try {
     const applicationData = req.body;
+    const existingApplication = await Application.findOne({ email: applicationData.email });
+
+    if (existingApplication) {
+      return res.status(400).json({ error: 'Application with this email already exists' });
+    }
+   
     const application = new Application(applicationData);
     await application.save();
     res.status(201).json({ message: 'Application submitted successfully!' });
