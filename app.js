@@ -6,14 +6,14 @@ const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const DB_PASSWORD = process.env.DB_PASSWORD;
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://caleb:caleb123@cluster0.nyqydiu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-  useNewUrlParser: true,
+mongoose.connect(`mongodb+srv://caleb:${DB_PASSWORD}@cluster0.nyqydiu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`, {
   useUnifiedTopology: true,
 });
 
