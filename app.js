@@ -13,9 +13,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDB connection
-mongoose.connect(`mongodb+srv://caleb:${DB_PASSWORD}@cluster0.nyqydiu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`, {
-  useUnifiedTopology: true,
-});
+mongoose.connect(`mongodb+srv://caleb:${DB_PASSWORD}@cluster0.nyqydiu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
