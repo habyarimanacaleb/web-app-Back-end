@@ -49,13 +49,13 @@ app.post('/apply', async (req, res) => {
    
     const application = new Application(applicationData);
     await application.save();
-    res.status(201).json({ message: 'Application submitted successfully!' });
+    res.status(201).json({ message: 'Application submitted successfully!',application });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to submit application' });
   }
 });
-app.get('/applications', async (req, res) => {
+app.get('/api/applications', async (req, res) => {
   try {
     const applications = await Application.find();
     res.status(200).json(applications);
