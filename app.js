@@ -10,13 +10,13 @@ const isAdmin= require('./middleware/IsAdmin');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const DB_PASSWORD = process.env.DB_PASSWORD;
-const SECRETE = process.env.SECRETE;
+const SECRET = process.env.SECRETE;
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 app.use(session({
-  secret: SECRETE, // Replace with a strong secret key
+  secret: SECRET, // Replace with a strong secret key
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // Set to true if using HTTPS
