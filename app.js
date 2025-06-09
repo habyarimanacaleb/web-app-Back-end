@@ -46,9 +46,8 @@ const transporter = nodemailer.createTransport({
     pass: process.env.ADMIN_PASS,
   },
 });
-
 // MongoDB connection
-mongoose.connect(process.env.DB_URI || `mongodb://localhost:27017/applications`);
+mongoose.connect(process.env.DB_URI || `mongodb://localhost:27017`);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
