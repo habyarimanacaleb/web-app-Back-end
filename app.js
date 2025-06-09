@@ -10,8 +10,6 @@ const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const SECRET = process.env.SECRETE;
-
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
@@ -35,7 +33,7 @@ app.use(cors({
 app.use(bodyParser.urlencoded({ extended: true }));
 // Session middleware
 app.use(session({
-  secret: SECRET, 
+  secret: process.env.SECRET|| 'MY&SECRET!KEY', // Use a strong secret key
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } 
