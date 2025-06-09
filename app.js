@@ -15,6 +15,23 @@ const SECRET = process.env.SECRETE;
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
+const allowedOrigins = [
+  'http://127.0.0.1:5500/', // Local development
+  'https://calebtech-studio.netlify.app/', // Replace with your real deployed frontend URL
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin like mobile apps or curl
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // If you're using cookies/sessions
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 // Session middleware
 app.use(session({
@@ -33,7 +50,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // MongoDB connection
-mongoose.connect(process.env.DB_URI || `mongodb://localhost:27017/admin`);
+mongoose.connect(process.env.DB_URI || `mongodb://localhost:27017/applications`);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
