@@ -2,7 +2,11 @@
 function isAdmin(req, res, next) {
   if (req.session && req.session.user && req.session.user.role === 'admin') {
     next();
-  } else {
+  }
+  else if(req.user && req.user.role === 'admin') {
+    next();
+  }
+   else {
     console.log('Access denied: User is not an admin');
     res.status(403).json({ error: 'Access denied' });
   }
