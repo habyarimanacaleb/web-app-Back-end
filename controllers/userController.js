@@ -46,18 +46,76 @@ exports.logout = (req, res) => {
   });
 };
 
+// Get all users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+};
+
+// Get user by ID
+exports.getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch user' });
+  }
+};
+// Update user
+exports.updateUser = async (req, res) => {
+
+  try {
+    const { username, email, role } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { username, email, role },
+      { new: true }
+    );  
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json({ message: 'User updated successfully', user });
+  }
+  catch (err) {
+    res.status(500).json({ error: 'Failed to update user' });
+  } 
+}
+// Delete user
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json({ message: 'User deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+};
+
 // Admin dashboard
 exports.adminDashboard = async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: -1 });
     const applicationCount = await Application.countDocuments();
     const contactCount = await Contact.countDocuments();
+    const countUsers = await User.countDocuments();
     const latestApplications = await Application.find().sort({ createdAt: -1 }).limit(5);
     const latestContacts = await Contact.find().sort({ createdAt: -1 }).limit(5);
+   
+    // fetch allusers,allicants,allcontacts data with query
 
+    const allApplicants = await Application.find();
+    const allContacts = await Contact.find();
+    // Combine all data into a single response
+
+    
     res.json({
       users,
-      totalUsers: users.length,
+      totalUsers: countUsers,
+      allApplicants,
+      allContacts,
       applicationCount,
       contactCount,
       latestApplications,
